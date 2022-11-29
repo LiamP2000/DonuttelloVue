@@ -19,7 +19,6 @@
 .event-card {
 	width: 320px;
 	height: auto;
-	min-height: 450px;
 	background: #E72C70;
 	border-radius: 20px;
 	overflow: hidden;
@@ -40,13 +39,5 @@ img {
 	box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2),
 		0 1px 15px 0 rgba(0, 0, 0, 0.19);
 }
-/*.event-card > .title {
-	margin: 0;
-}
-.event-link {
-	color: black;
-	text-decoration: none;
-	font-weight: 100;
-}*/
 
 </style>
