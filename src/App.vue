@@ -5,7 +5,7 @@ import DonutCard from './components/DonutCard.vue'
 
 <template>
   <div class="app">
-    <h1>Donut Gallery</h1>
+    <h1>Donut orders</h1>
     <div class="donut-cards">
         <DonutCard />
         <DonutCard />
@@ -20,7 +20,7 @@ import DonutCard from './components/DonutCard.vue'
 .app {
   font-family: 'Dosis', sans-serif;
   text-align: center;
-  color: #E72C70;
+  color: var(--primary-pink);
 }
 
 .donut-cards {
