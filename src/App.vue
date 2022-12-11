@@ -3,7 +3,7 @@ import DonutCard from './components/DonutCard.vue'
 </script>
 
 <script>
-let response = await fetch('http://localhost:3000/donuts')
+let response = await fetch('https://donuttello-api.onrender.com/donuts')
 let json = await response.json()
 let donuts = json.data
 </script>

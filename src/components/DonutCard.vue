@@ -9,7 +9,7 @@ export default {
 			this.donut.done = true
 		}
 
-		await fetch('http://localhost:3000/donuts/' + this.donut._id, {
+		await fetch('https://donuttello-api.onrender.com/donuts/' + this.donut._id, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json"
@@ -20,7 +20,7 @@ export default {
 		location.reload()
 	},
 	async deleteDonut(event) {
-		await fetch('http://localhost:3000/donuts/' + this.donut._id, {
+		await fetch('https://donuttello-api.onrender.com/donuts/' + this.donut._id, {
 			method: "DELETE"
 		})
 
