@@ -17,7 +17,7 @@ export default {
 			body: JSON.stringify(this.donut)
 		})
 
-		this.$forceUpdate();
+		location.reload()
 	},
 	async deleteDonut(event) {
 		await fetch('http://localhost:3000/donuts/' + this.donut._id, {
@@ -110,7 +110,6 @@ export default {
 	margin-bottom: 24px;
 	margin-right: 10px;
 	transition: all 0.2s linear;
-	cursor: pointer;
 	color: var(--neutral);
     margin: auto;
 	padding: 20px;
@@ -129,6 +128,7 @@ export default {
     border: none;
     border-radius: 40px;
     height: 1.6rem;
+	cursor: pointer;
 }
 
 .card__done {
