@@ -5,7 +5,7 @@ import DonutCard from './components/DonutCard.vue'
 <script>
 let localUrl = "http://localhost:3000";
 let remoteUrl = "https://donuttello-api.onrender.com";
-let apiUrl = localUrl;
+let apiUrl = remoteUrl;
 
 export default {
   data() {
