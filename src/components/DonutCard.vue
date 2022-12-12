@@ -9,10 +9,12 @@ export default {
 			this.donut.done = true
 		}
 
-		await fetch(this.apiUrl + this.donut._id, {
+		let jwtToken = localStorage.getItem("token")
+		await fetch(this.apiUrl + "/donuts/" + this.donut._id, {
 			method: "PUT",
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json", 
+				"Authorization": jwtToken
 			},
 			body: JSON.stringify(this.donut)
 		})
@@ -20,8 +22,13 @@ export default {
 		location.reload()
 	},
 	async deleteDonut(event) {
-		await fetch(this.apiUrl + this.donut._id, {
-			method: "DELETE"
+		let jwtToken = localStorage.getItem("token")
+
+		await fetch(this.apiUrl + "/donuts/" + this.donut._id, {
+			method: "DELETE",
+			headers: {
+				"Authorization": jwtToken
+			}
 		})
 
 		location.reload()

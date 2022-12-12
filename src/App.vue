@@ -3,18 +3,57 @@ import DonutCard from './components/DonutCard.vue'
 </script>
 
 <script>
+let localUrl = "http://localhost:3000";
+let remoteUrl = "https://donuttello-api.onrender.com";
+let apiUrl = localUrl;
+
 export default {
   data() {
+    let jwtToken = localStorage.getItem("token")
+    let loggedIn = false
+
+    // Is jwt token in localStore?
+    if(jwtToken != null){
+      // don't show login screen anymore
+      loggedIn = true
+    }
+
     return {
-      loggedIn: false
+      loggedIn: loggedIn,
+      jwtToken: jwtToken
+    }
+  },
+  methods: {
+    async clickLogin() {
+      let loginObj = {
+        username: this.$refs.username.value,
+        password: this.$refs.password.value
+      }
+
+      let result = await fetch(apiUrl + "/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(loginObj)
+      })
+      let json = await result.json()
+
+      if(json.status == "error"){
+        // user/pass wrong
+        alert(json.message)
+        return
+      }else{
+        // login success
+        localStorage.setItem("token", json.data)
+        this.loggedIn = true
+      }
     }
   }
 }
-let localUrl = "http://localhost:3000/donuts/";
-let remoteUrl = "https://donuttello-api.onrender.com/donuts/";
-let apiUrl = localUrl;
 
-let response = await fetch(apiUrl)
+// Get all donuts from API
+let response = await fetch(apiUrl + "/donuts")
 let json = await response.json()
 let donuts = json.data
 </script>
@@ -25,17 +64,17 @@ let donuts = json.data
       <h1>Admin login</h1>
       <label for="username">Username</label>
       <br/>
-      <input type="text" id="username" name="username" />
+      <input type="text" ref="username" id="username" name="username" />
       
       <br/>
       <br/>
 
       <label for="password">Password</label>
       <br/>
-      <input type="password" id="password" name="password" />
+      <input type="password" ref="password" id="password" name="password" />
       <br/>
       <br/>
-      <button class="login__btn" @click="loggedIn = !loggedIn">Login</button>
+      <button class="login__btn" @click="clickLogin">Login</button>
     </div>
     <div v-else>
       <h1>Donut orders</h1>
