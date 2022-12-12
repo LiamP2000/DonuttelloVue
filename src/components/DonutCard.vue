@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ['donut'],
+  props: ['donut', 'apiUrl'],
   methods: {
 	async updateDonut(event) {
 		if(this.donut.done == true){
@@ -9,7 +9,7 @@ export default {
 			this.donut.done = true
 		}
 
-		await fetch('https://donuttello-api.onrender.com/donuts/' + this.donut._id, {
+		await fetch(this.apiUrl + this.donut._id, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json"
@@ -20,7 +20,7 @@ export default {
 		location.reload()
 	},
 	async deleteDonut(event) {
-		await fetch('https://donuttello-api.onrender.com/donuts/' + this.donut._id, {
+		await fetch(this.apiUrl + this.donut._id, {
 			method: "DELETE"
 		})
 
