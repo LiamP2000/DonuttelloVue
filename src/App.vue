@@ -24,6 +24,12 @@ export default {
     }
   },
   methods: {
+    async clickLogout(){
+      // delete everything (including token) from localstore
+      localStorage.clear()
+      // reload page
+      location.reload()
+    },
     async clickLogin() {
       let loginObj = {
         username: this.$refs.username.value,
@@ -78,6 +84,7 @@ let donuts = json.data
     </div>
     <div v-else>
       <h1>Donut orders</h1>
+      <button class="login__btn" @click="clickLogout">Logout</button>
       <div class="donut-cards">
         <DonutCard v-for="(item, index) in donuts" :donut="item" :apiUrl="apiUrl" />
       </div>
