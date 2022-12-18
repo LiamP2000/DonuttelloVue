@@ -117,7 +117,7 @@ export default {
       <br/>
       <br/>
       <p class="span__error" ref="wrongLogin"></p>
-      <button class="login__btn" @click="clickLogin">Login</button>
+      <button class="btn login__btn" @click="clickLogin">Login</button>
     </div>
     <div v-else>
       <h1>Donut orders</h1>
