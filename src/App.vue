@@ -1,4 +1,5 @@
 <script setup>
+import { isFunctionType } from '@vue/compiler-core';
 import DonutCard from './components/DonutCard.vue'
 </script>
 
@@ -19,16 +20,49 @@ export default {
     }
 
     return {
+      showChangePasswordBox: false,
       loggedIn: loggedIn,
       jwtToken: jwtToken
     }
   },
   methods: {
+    clickChangePassword () {
+      if(this.showChangePasswordBox){
+        this.showChangePasswordBox = false;
+      }else{
+        this.showChangePasswordBox = true;
+      }
+    },
     async clickLogout(){
       // delete everything (including token) from localstore
       localStorage.clear()
       // reload page
       location.reload()
+    },
+    async clickSavePassword() {
+      // http://localhost:3000/users/changePassword
+      let jwtToken = localStorage.getItem("token")
+      let passwordObj = {
+          oldPassword: this.$refs.oldPassword.value,
+          newPassword: this.$refs.newPassword.value,
+          confirmPassword: this.$refs.confirmPassword.value
+      }
+
+      let result = await fetch(apiUrl + "/users/changePassword", {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": jwtToken
+        },
+        body: JSON.stringify(passwordObj)
+      })
+      let json = await result.json()
+
+      if(json.status == "success"){
+        this.showChangePasswordBox = false
+      }else{
+        this.$refs.changePasswordError.innerText = json.message
+      }
     },
     async clickLogin() {
       let loginObj = {
@@ -47,7 +81,7 @@ export default {
 
       if(json.status == "error"){
         // user/pass wrong
-        alert(json.message)
+        this.$refs.wrongLogin.innerText = json.message
         return
       }else{
         // login success
@@ -80,11 +114,26 @@ let donuts = json.data
       <input type="password" ref="password" id="password" name="password" />
       <br/>
       <br/>
-      <button class="login__btn" @click="clickLogin">Login</button>
+      <p class="span__error" ref="wrongLogin"></p>
+      <button class="btn login__btn" @click="clickLogin">Login</button>
     </div>
     <div v-else>
       <h1>Donut orders</h1>
-      <button class="login__btn" @click="clickLogout">Logout</button>
+      <div v-if='showChangePasswordBox'>
+        <label class="pw__label" for="oldPassword">Old Password</label>
+        <input type="password" id="oldPassword" name="oldPassword" ref="oldPassword" />
+        <br/>
+        <label class="pw__label" for="newPassword">New Password</label>
+        <input type="password" id="newPassword" name="newPassword" ref="newPassword" />
+        <br/>
+        <label class="pw__label" for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" ref="confirmPassword" />
+        <p class="span__error" ref="changePasswordError"></p>
+        <br/>
+        <button class="btn change_password__btn" @click="clickSavePassword">Save</button>
+      </div>
+      <button class="btn password__btn" @click="clickChangePassword">Change password</button>
+      <button class="btn login__btn" @click="clickLogout">Logout</button>
       <div class="donut-cards">
         <DonutCard v-for="(item, index) in donuts" :donut="item" :apiUrl="apiUrl" />
       </div>
@@ -97,16 +146,37 @@ input {
   padding: 0.1rem 0.5rem;
   border-radius: 25px;
 }
+.span__error {
+  color: red;
+}
+
+.pw__label {
+  margin-right: 20px;
+}
+
+.change_password__btn {
+  width: 5rem;
+  margin: 20px;
+}
+
+.btn {
+  border: none;
+  border-radius: 40px;
+  width: 5rem;
+  height: 1.6rem;
+  cursor: pointer;
+  color: white;
+  color: #F7F249;
+  background-color: #E72C70;
+}
 
 .login__btn {
-    border: none;
-    border-radius: 40px;
     width: 5rem;
-    height: 1.6rem;
-	  cursor: pointer;
-	  color: white;
-	  color: #F7F249;
-    background-color: #E72C70;
+}
+
+.password__btn {
+    width: 10rem;
+    margin-right: 20px;
 }
 
 .app {
