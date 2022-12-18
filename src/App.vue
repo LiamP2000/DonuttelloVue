@@ -22,8 +22,15 @@ export default {
     return {
       showChangePasswordBox: false,
       loggedIn: loggedIn,
-      jwtToken: jwtToken
+      jwtToken: jwtToken,
+      donuts: [],
     }
+  },
+  async created() {
+    // Get all donuts from API
+    let response = await fetch(apiUrl + "/donuts")
+    let json = await response.json()
+    this.donuts = json.data
   },
   methods: {
     clickChangePassword () {
@@ -91,11 +98,6 @@ export default {
     }
   }
 }
-
-// Get all donuts from API
-let response = await fetch(apiUrl + "/donuts")
-let json = await response.json()
-let donuts = json.data
 </script>
 
 <template>
@@ -115,7 +117,7 @@ let donuts = json.data
       <br/>
       <br/>
       <p class="span__error" ref="wrongLogin"></p>
-      <button class="btn login__btn" @click="clickLogin">Login</button>
+      <button class="login__btn" @click="clickLogin">Login</button>
     </div>
     <div v-else>
       <h1>Donut orders</h1>
